@@ -3,6 +3,8 @@ package com.example.gaushala_api.controller;
 import com.example.gaushala_api.model.Gaushala;
 import com.example.gaushala_api.service.GaushalaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,12 +23,15 @@ public class GaushalaController {
 
     // Login a Gaushala
     @PostMapping("/login")
-    public String loginGaushala(@RequestBody Gaushala gaushala) {
+    public ResponseEntity<?> loginGaushala(@RequestBody Gaushala gaushala) {
         boolean isAuthenticated = gaushalaService.authenticate(gaushala.getUserId(), gaushala.getPassword());
+
         if (isAuthenticated) {
-            return "Login Successful";
+            // Returning a JSON response with a success message
+            return ResponseEntity.ok().body("{\"message\": \"Login Successful\"}");
         } else {
-            return "Login Failed";
+            // Returning a JSON response with a failure message and status 401 (Unauthorized)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Login Failed\"}");
         }
     }
 }

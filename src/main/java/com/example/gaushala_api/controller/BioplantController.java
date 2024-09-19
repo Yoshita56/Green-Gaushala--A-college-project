@@ -1,8 +1,11 @@
 package com.example.gaushala_api.controller;
 
 import com.example.gaushala_api.model.BiogasPlant;
+import com.example.gaushala_api.model.Gaushala;
 import com.example.gaushala_api.service.BiogasPlantService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,12 +24,15 @@ public class BioplantController {
 
     // Login a Biogas Plant
     @PostMapping("/login")
-    public String loginBioplant(@RequestBody BiogasPlant biogasPlant) {
+    public ResponseEntity<?> loginBioplant(@RequestBody BiogasPlant biogasPlant) {
         boolean isAuthenticated = biogasPlantService.authenticate(biogasPlant.getUserId(), biogasPlant.getPassword());
+
         if (isAuthenticated) {
-            return "Login Successful";
+            // Returning a JSON response with a success message
+            return ResponseEntity.ok().body("{\"message\": \"Login Successful\"}");
         } else {
-            return "Login Failed";
+            // Returning a JSON response with a failure message and status 401 (Unauthorized)
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Login Failed\"}");
         }
     }
 }
