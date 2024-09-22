@@ -22,7 +22,8 @@ public class ReportService {
     }
 
     public Report saveReport(Report report) {
-        return reportRepository.save(report);
+        // Optionally, you can add validation logic here if needed
+        return reportRepository.save(report); // This will save the report with the byte array image
     }
 
     public void deleteReport(Long id) {
