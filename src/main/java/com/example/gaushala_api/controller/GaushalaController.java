@@ -7,6 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/gaushala")
 public class GaushalaController {
@@ -34,4 +36,12 @@ public class GaushalaController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Login Failed\"}");
         }
     }
+
+    // Get all Gaushalas
+    @GetMapping("/gaushalas")
+    public ResponseEntity<List<Gaushala>> getAllGaushalas() {
+        List<Gaushala> gaushalas = gaushalaService.getAllGaushalas();
+        return new ResponseEntity<>(gaushalas, HttpStatus.OK);
+    }
+
 }
