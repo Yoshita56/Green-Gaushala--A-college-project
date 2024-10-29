@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="@drawable/purple_bg"
     tools:context=".ui.order.OrderFragment">
 
     <!-- Title -->
@@ -14,18 +15,25 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/amarante"
-        android:text="Accepted Orders"
+        android:text="Pending Orders"
+        android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold" />
 
     <!-- List of pending orders -->
-    <!-- RecyclerView for accepted orders -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewOrders"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#d9f4f1" />
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#d9f4f1">
 
+        <LinearLayout
+            android:id="@+id/orders_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </ScrollView>
 
     <!-- Buttons for actions -->
     <LinearLayout
@@ -34,7 +42,22 @@
         android:orientation="horizontal">
 
         <!-- Accept button -->
+        <Button
+            android:id="@+id/btn_accept"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/amarante"
+            android:text="Accept" />
 
+        <!-- Reject button -->
+        <Button
+            android:id="@+id/btn_reject"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/amarante"
+            android:text="Reject" />
 
     </LinearLayout>
 </LinearLayout>
