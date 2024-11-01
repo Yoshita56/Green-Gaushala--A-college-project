@@ -1,0 +1,51 @@
+package com.example.refining_gaushala_app;
+
+import android.os.Bundle;
+
+import com.example.refining_gaushala_app.models.Gaushala;
+import com.google.android.material.snackbar.Snackbar;
+
+import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+
+import androidx.core.graphics.Insets;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.refining_gaushala_app.databinding.ActivityAvailableGaushalaBinding;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class AvailableGaushalaActivity extends AppCompatActivity {
+    private RecyclerView recyclerViewGaushalas;
+    private GaushalaAdapter gaushalaAdapter;
+    private List<Gaushala> gaushalaList;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EdgeToEdge.enable(this);
+        setContentView(R.layout.activity_available_gaushala);
+        recyclerViewGaushalas = findViewById(R.id.recyclerViewGaushalas);
+        recyclerViewGaushalas.setLayoutManager(new LinearLayoutManager(this));
+
+        // Load gaushalas from the database
+        loadGaushalas();
+    }
+
+    private void loadGaushalas() {
+        // Fetch gaushalas from your database or API and update the RecyclerView
+        gaushalaList = new ArrayList<>(); // Populate this with your data
+        gaushalaAdapter = new GaushalaAdapter(gaushalaList);
+        recyclerViewGaushalas.setAdapter(gaushalaAdapter);
+    }
+
+}

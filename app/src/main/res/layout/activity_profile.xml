@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#f0f0f0"
+    tools:context=".ProfileActivity">
+
+    <!-- CardView for Plant Profile -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardPlantProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/btnUpdate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        android:backgroundTint="#ffffff">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:id="@+id/tvPlantName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Plant Name"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                android:textColor="#1e88e5"
+                android:paddingBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvPlantNameValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Display Plant Name]"
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:paddingBottom="16dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e0e0e0"/>
+
+            <TextView
+                android:id="@+id/tvLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1e88e5"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvLocationValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Display Location]"
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:paddingBottom="16dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e0e0e0"/>
+
+            <TextView
+                android:id="@+id/tvRegistrationNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registration Number"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1e88e5"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvRegistrationNumberValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Display Registration Number]"
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:paddingBottom="16dp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#e0e0e0"/>
+
+            <TextView
+                android:id="@+id/tvPhoneNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Contact Number"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="#1e88e5"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"/>
+
+            <TextView
+                android:id="@+id/tvPhoneNumberValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="[Display Phone Number]"
+                android:textSize="18sp"
+                android:textColor="#333333"
+                android:paddingBottom="16dp"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Update Button -->
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Update Profile"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#1e88e5"
+        app:layout_constraintTop_toBottomOf="@+id/cardPlantProfile"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="8dp"
+    android:padding="12dp"
+    android:textSize="18sp"
+    android:layout_marginBottom="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
