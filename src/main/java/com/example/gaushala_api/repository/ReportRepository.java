@@ -1,6 +1,7 @@
 package com.example.gaushala_api.repository;
 
 import com.example.gaushala_api.model.Report;
+import com.example.gaushala_api.model.Gaushala;  // Import Gaushala model
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -13,7 +14,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     List<Report> findByStatus(String status);
 
     // Method to find reports accepted by a specific gaushala user
-    List<Report> findByAcceptedBy(String acceptedBy);
+    List<Report> findByAcceptedBy(Gaushala acceptedBy); // Change parameter type to Gaushala
 
     // Optional: Custom query to find all reports with a specific status
     @Query("SELECT r FROM Report r WHERE r.status = :status")

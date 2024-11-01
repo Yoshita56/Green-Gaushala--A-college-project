@@ -1,16 +1,18 @@
 package com.example.gaushala_api.controller;
 
 import org.springframework.web.multipart.MultipartFile;
-import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.gaushala_api.model.Report;
+import com.example.gaushala_api.model.Gaushala;
 import com.example.gaushala_api.service.ReportService;
+import com.example.gaushala_api.service.GaushalaService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,6 +24,9 @@ public class ReportController {
 
     @Autowired
     private ReportService reportService;
+
+    @Autowired
+    private GaushalaService gaushalaService;
 
     // Retrieve all reports
     @GetMapping
@@ -36,7 +41,7 @@ public class ReportController {
         Optional<Report> report = reportService.getReportById(id);
         return report.map(ResponseEntity::ok)
                 .orElseGet(() -> {
-                    logger.warn("Report with ID: " + id + " not found.");
+                    logger.warn("Report with ID: {} not found.", id);
                     return ResponseEntity.notFound().build();
                 });
     }
@@ -48,25 +53,24 @@ public class ReportController {
             @RequestParam("timeSlot") String timeSlot,
             @RequestParam("location") String location,
             @RequestParam("reportedBy") String reportedBy,
-            @RequestParam("image") MultipartFile imageFile) { // Accept the image file
-
+            @RequestParam("image") MultipartFile imageFile) {
         try {
-            byte[] imageBytes = imageFile.getBytes(); // Convert the image to byte array
+            byte[] imageBytes = imageFile.getBytes();
 
             Report report = new Report();
             report.setArea(area);
             report.setTimeSlot(timeSlot);
             report.setLocation(location);
             report.setReportedBy(reportedBy);
-            report.setImage(imageBytes); // Set the image bytes
-            report.setStatus("pending"); // Initialize status as pending
+            report.setImage(imageBytes);
+            report.setStatus("pending");
 
             Report savedReport = reportService.saveReport(report);
-            logger.info("Report created successfully: " + savedReport);
+            logger.info("Report created successfully: {}", savedReport);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedReport);
         } catch (IOException e) {
-            logger.error("Error while uploading image: " + e.getMessage());
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // Handle errors
+            logger.error("Error while uploading image: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -77,7 +81,7 @@ public class ReportController {
         if (existingReport.isPresent()) {
             Report updatedReport = existingReport.get();
 
-            // Update the fields with values from the request body if provided
+            // Update fields if they are not null
             if (report.getArea() != null) updatedReport.setArea(report.getArea());
             if (report.getTimeSlot() != null) updatedReport.setTimeSlot(report.getTimeSlot());
             if (report.getLocation() != null) updatedReport.setLocation(report.getLocation());
@@ -88,39 +92,40 @@ public class ReportController {
             Report savedReport = reportService.saveReport(updatedReport);
             return ResponseEntity.ok(savedReport);
         } else {
-            logger.warn("Report with ID: " + id + " not found for update.");
+            logger.warn("Report with ID: {} not found for update.", id);
             return ResponseEntity.notFound().build();
         }
     }
 
     // Accept a report request
     @PutMapping("/{id}/accept")
-    public ResponseEntity<Report> acceptReport(@PathVariable Long id, @RequestParam String acceptedBy) {
-        logger.info("Attempting to accept report with ID: " + id + " by user: " + acceptedBy);
-
-        // Delegate the logic to the service layer
-        Optional<Report> acceptedReport = reportService.acceptReport(id, acceptedBy);
-
-        if (acceptedReport.isPresent()) {
-            logger.info("Report accepted: " + acceptedReport.get() + " by user: " + acceptedBy);
-            return ResponseEntity.ok(acceptedReport.get());
+    public ResponseEntity<Report> acceptReport(@PathVariable Long id, @RequestParam Long gaushalaId) {
+        Gaushala gaushala = gaushalaService.getGaushalaById(gaushalaId);
+        if (gaushala != null) { // Check if gaushala is found
+            Optional<Report> acceptedReport = reportService.acceptReport(id, gaushala);
+            return acceptedReport
+                    .map(ResponseEntity::ok)
+                    .orElseGet(() -> ResponseEntity.notFound().build());
         } else {
-            logger.warn("Report with ID: " + id + " not found for acceptance.");
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
+
+
+
+
+
 
     // Delete a report
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteReport(@PathVariable Long id) {
-        Optional<Report> existingReport = reportService.getReportById(id);
-        if (existingReport.isPresent()) {
+        if (reportService.getReportById(id).isPresent()) {
             reportService.deleteReport(id);
-            logger.info("Report with ID: " + id + " deleted successfully.");
-            return ResponseEntity.noContent().build(); // Return 204 No Content
+            logger.info("Report with ID: {} deleted successfully.", id);
+            return ResponseEntity.noContent().build();
         } else {
-            logger.warn("Report with ID: " + id + " not found for deletion.");
-            return ResponseEntity.notFound().build(); // Return 404 Not Found
+            logger.warn("Report with ID: {} not found for deletion.", id);
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -130,17 +135,25 @@ public class ReportController {
         Optional<Report> existingReport = reportService.getReportById(id);
         if (existingReport.isPresent()) {
             Report updatedReport = existingReport.get();
-
-            // Update only the status if provided
             if (report.getStatus() != null) {
                 updatedReport.setStatus(report.getStatus());
             }
-
-            // Save the updated report
             Report savedReport = reportService.saveReport(updatedReport);
             return ResponseEntity.ok(savedReport);
         } else {
-            logger.warn("Report with ID: " + id + " not found for status update.");
+            logger.warn("Report with ID: {} not found for status update.", id);
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Retrieve a specific Gaushala by ID
+    @GetMapping("/gaushalas/{id}")
+    public ResponseEntity<Gaushala> getGaushalaById(@PathVariable Long id) {
+        Gaushala gaushala = gaushalaService.getGaushalaById(id);
+        if (gaushala != null) {
+            return ResponseEntity.ok(gaushala);
+        } else {
+            logger.warn("Gaushala with ID: {} not found.", id);
             return ResponseEntity.notFound().build();
         }
     }
