@@ -1,7 +1,7 @@
 package com.example.gaushala_api.controller;
 
 import com.example.gaushala_api.model.BiogasPlant;
-import com.example.gaushala_api.model.Gaushala;
+import com.example.gaushala_api.repository.BiogasPlantRepository;
 import com.example.gaushala_api.service.BiogasPlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/bioplant")
 public class BioplantController {
+
+    @Autowired
+    private BiogasPlantRepository biogasPlantRepository;
 
     @Autowired
     private BiogasPlantService biogasPlantService;
@@ -35,4 +38,24 @@ public class BioplantController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Login Failed\"}");
         }
     }
+
+    // Create a bioplant gas request
+    @PostMapping("/request")
+    public ResponseEntity<?> createBioplantGasRequest(@RequestBody BiogasPlant request) {
+        // Assuming that the request contains dungType and dungRequested
+        biogasPlantService.createBioplantGasRequest(request.getDungType(), request.getDungRequested());
+        return ResponseEntity.status(HttpStatus.CREATED).body("{\"message\": \"Gas request created successfully\"}");
+    }
+
+    @PutMapping("/biogasplant/{id}")
+    public ResponseEntity<BiogasPlant> updateBiogasPlant(
+            @PathVariable Long id,
+            @RequestParam String dungType,
+            @RequestParam double dungRequested) {
+
+        BiogasPlant updatedPlant = biogasPlantService.updateBiogasPlant(id, dungType, dungRequested);
+
+        return ResponseEntity.ok(updatedPlant);
+    }
 }
+
