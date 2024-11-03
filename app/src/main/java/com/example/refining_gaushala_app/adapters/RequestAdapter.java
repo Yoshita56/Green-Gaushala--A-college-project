@@ -1,9 +1,11 @@
 package com.example.refining_gaushala_app.adapters;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -12,7 +14,7 @@ import com.example.refining_gaushala_app.models.Request;
 
 import java.util.List;
 
-public class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestViewHolder> {
+class RequestsAdapter extends RecyclerView.Adapter<RequestsAdapter.RequestViewHolder> {
     private List<Request> requests;
 
     public RequestsAdapter(List<Request> requests) {

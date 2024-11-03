@@ -3,6 +3,8 @@ package com.example.refining_gaushala_app;
 import android.os.Bundle;
 
 import com.example.refining_gaushala_app.models.Gaushala;
+import com.example.refining_gaushala_app.network.ReportApi;
+import com.example.refining_gaushala_app.network.RetrofitClient;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.activity.EdgeToEdge;
@@ -41,11 +43,35 @@ public class AvailableGaushalaActivity extends AppCompatActivity {
         loadGaushalas();
     }
 
+//    private void loadGaushalas() {
+//        // Fetch gaushalas from your database or API and update the RecyclerView
+//        gaushalaList = new ArrayList<>(); // Populate this with your data
+//        gaushalaAdapter = new GaushalaAdapter(gaushalaList);
+//        recyclerViewGaushalas.setAdapter(gaushalaAdapter);
+//    }
+
     private void loadGaushalas() {
-        // Fetch gaushalas from your database or API and update the RecyclerView
-        gaushalaList = new ArrayList<>(); // Populate this with your data
-        gaushalaAdapter = new GaushalaAdapter(gaushalaList);
-        recyclerViewGaushalas.setAdapter(gaushalaAdapter);
+        // Assuming you have a Retrofit client set up
+        ReportApi gaushalaApi = RetrofitClient.getRetrofitInstance().create(ReportApi.class);
+        gaushalaApi.getAllGaushalas().enqueue(new Callback<List<Gaushala>>() {
+            @Override
+            public void onResponse(Call<List<Gaushala>> call, Response<List<Gaushala>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    gaushalaList = response.body(); // Populate with fetched data
+                    gaushalaAdapter = new GaushalaAdapter(gaushalaList);
+                    recyclerViewGaushalas.setAdapter(gaushalaAdapter);
+                } else {
+                    // Handle the error
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Gaushala>> call, Throwable t) {
+                // Handle the failure
+            }
+        });
     }
+
+
 
 }
