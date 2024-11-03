@@ -47,6 +47,11 @@
         <activity
             android:name=".bioplantLogin"
             android:exported="false" />
+
+
+
+        <activity android:name=".SendEnquiryActivity" />
+
         <activity
             android:name=".gaushalaNav"
             android:exported="false"

@@ -8,6 +8,10 @@ public class Bioplant {
     private String userId;
     private String password;
 
+    private String dungType;
+
+    private float dungRequested;
+
     // Constructor
     public Bioplant(String name, String registrationNumber, String location, String phoneNumber, String userId, String password) {
         this.name = name;
