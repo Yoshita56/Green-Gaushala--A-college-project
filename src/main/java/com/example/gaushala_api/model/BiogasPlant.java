@@ -1,11 +1,12 @@
 package com.example.gaushala_api.model;
+
 import jakarta.persistence.*;
 import lombok.Data;
-import lombok.Setter;
+import java.time.LocalDate;
 
 @Data
 @Entity
-public class  BiogasPlant {
+public class BiogasPlant {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,14 +21,20 @@ public class  BiogasPlant {
     private String dungType;
     private double dungRequested;
 
-    public void setdungType(String dungType) {
-        this.dungType = dungType;
+    @ManyToOne
+    @JoinColumn(name = "gaushala_id", referencedColumnName = "id")
+    private Gaushala gaushala;
+
+    @Column(nullable = false)
+    private String status;  // Renamed to lowercase
+
+    private String date;
+
+    @PrePersist
+    public void setDefaults() {
+        if (status == null || status.isEmpty()) {
+            this.status = "completed";
+            System.out.println("Default status set to 'completed'");
+        }
     }
-
-    public void setdungRequested(double dungRequested) {
-        this.dungRequested = dungRequested;
-    }
-
-
-    // You can add additional fields if needed
 }

@@ -1,9 +1,12 @@
 package com.example.gaushala_api.service;
 
 import com.example.gaushala_api.model.BiogasPlant;
+import com.example.gaushala_api.model.Gaushala;
 import com.example.gaushala_api.repository.BiogasPlantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class BiogasPlantService {
@@ -32,8 +35,8 @@ public class BiogasPlantService {
 
         // Create a new BiogasPlant object for the gas request
         BiogasPlant bioplantGas = new BiogasPlant();
-        bioplantGas.setdungType(dungType); // Ensure the method name matches your model
-        bioplantGas.setdungRequested(dungRequested); // Ensure the method name matches your model
+        bioplantGas.setDungType(dungType); // Ensure the method name matches your model
+        bioplantGas.setDungRequested(dungRequested); // Ensure the method name matches your model
 
         // Save to repository and return the saved object
         return biogasPlantRepository.save(bioplantGas);
@@ -45,12 +48,34 @@ public class BiogasPlantService {
                 .orElseThrow(() -> new IllegalArgumentException("BiogasPlant not found with ID: " + id));
 
         // Update the fields
-        existingPlant.setdungType(dungType);
-        existingPlant.setdungRequested(dungRequested);
+        existingPlant.setDungType(dungType);
+        existingPlant.setDungRequested(dungRequested);
 
         // Save the updated object back to the database
         return biogasPlantRepository.save(existingPlant);
     }
 
+
+    @Autowired
+    public BiogasPlantService(BiogasPlantRepository biogasPlantRepository) {
+        this.biogasPlantRepository = biogasPlantRepository;
+    }
+
+    public Long findBioplantIdByUserId(String userId) {
+        return biogasPlantRepository.findIdByUserId(userId);
+    }
+
+    // Retrieve all Gaushalas
+    public List<BiogasPlant> getAllBiogasPlant() {
+        return biogasPlantRepository.findAll();
+    }
+
+
+
+    public BiogasPlant getBiogasPlant(Long id) {
+        // Retrieve the BiogasPlant object by ID
+        return biogasPlantRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("BiogasPlant not found with ID: " + id));
+    }
 
 }
