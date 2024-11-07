@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="16dp">
+
+    <!-- Order Date TextView -->
+    <TextView
+        android:id="@+id/tvOrderDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Order Date: 01/11/2024"
+        android:textSize="16sp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Requested Amount TextView -->
+    <TextView
+        android:id="@+id/tvDungAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Requested Amount: 500 kg"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/tvOrderDate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Dung Type TextView -->
+    <TextView
+        android:id="@+id/tvDungType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Dung Type: Fresh"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/tvDungAmount"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Request From TextView -->
+    <TextView
+        android:id="@+id/tvRequestedFrom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="RequestFrom: Gaushala Name"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/tvDungType"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <!-- Remarks TextView -->
+    <TextView
+        android:id="@+id/tvOrderStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Status: Enquiry accepted."
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/tvRequestedFrom"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

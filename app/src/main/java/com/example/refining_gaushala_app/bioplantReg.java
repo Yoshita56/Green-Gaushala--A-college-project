@@ -55,7 +55,19 @@ public class bioplantReg extends AppCompatActivity {
             }
 
             // Create Bioplant object with user input
-            Bioplant bioplant = new Bioplant(nameInput, registrationNumberInput, locationInput, phoneNumberInput, userIdInput, passwordInput);
+            // Example: Using the constructor with all fields including dungType, dungRequested, and enquiryDate
+            Bioplant bioplant = new Bioplant(
+                    0,                         // id (long), set to 0 if you're not passing an ID
+                    nameInput,                  // name (String)
+                    registrationNumberInput,    // registrationNumber (String)
+                    locationInput,              // location (String)
+                    phoneNumberInput,           // phoneNumber (String)
+                    userIdInput,                // userId (String)
+                    passwordInput,              // password (String)
+                    "Fresh",                    // dungType (String)
+                    56.0f,                      // dungRequested (Float)
+                    null                        // gaushala (Gaushala), null or pass a Gaushala object if available
+            );
 
             // Create AuthApi instance
             AuthApi authApi = RetrofitClient.getAuthApi();

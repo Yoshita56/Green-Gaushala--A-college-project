@@ -1,5 +1,6 @@
 package com.example.refining_gaushala_app.network;
 
+import com.example.refining_gaushala_app.models.Bioplant;
 import com.example.refining_gaushala_app.models.Gaushala;
 import com.example.refining_gaushala_app.models.Report;
 import com.example.refining_gaushala_app.ui.slideshow.GaushalaUpdateRequest;
@@ -7,6 +8,7 @@ import com.example.refining_gaushala_app.ui.slideshow.GaushalaUpdateRequest;
 import java.util.List;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
 
@@ -70,4 +72,42 @@ public interface ReportApi {
     // Get dung details for a specific Gaushala
     @GET("/api/gaushala/dung/details/{id}")
     Call<GaushalaUpdateRequest> getDungDetails(@Path("id") Long gaushalaId);
+
+
+    //to update dungtype and dungamount to bioplant
+    @FormUrlEncoded
+    @POST("/api/bioplant/bioplant/{id}")
+    Call<String> updateBioplant(
+            @Path("id") Long id,
+            @Field("dungType") String dungType,
+            @Field("dungRequested") Double dungRequested,
+            @Field("status") String status,
+            @Field("date") String date,
+            @Field("gaushalaId") Long gaushalaId
+    );
+
+
+    // Define the new endpoint for updating the Bioplant status
+    @FormUrlEncoded
+    @POST("/bioplant/{id}/updateStatus")
+    Call<String> updateBioplantStatus(
+            @Path("id") long bioplantId,
+            @Field("dungType") String dungType,
+            @Field("dungRequested") double dungRequested,
+            @Field("date") String date,
+            @Field("gaushalaId") long gaushalaId,
+            @Field("status") String status
+    );
+
+
+    //to fetch bioplant id
+    @GET("/api/bioplant/bioplant/{id}")
+    Call<Bioplant> getBioplant(@Path("id") long bioplantId);
+
+    // Define a GET method to retrieve all bioplants
+    @GET("/api/bioplant/biogas")
+    Call<List<Bioplant>> getAllBioplants();
+
+
+
 }

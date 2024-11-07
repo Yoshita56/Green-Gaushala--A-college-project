@@ -2,6 +2,7 @@ package com.example.refining_gaushala_app;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -51,15 +52,16 @@ public class GaushalaAdapter extends RecyclerView.Adapter<GaushalaAdapter.Gausha
 
         holder.tvFreshDungAvailability.setText(freshDungText);
         holder.tvDryDungAvailability.setText(dryDungText);
-
+        Log.d("GaushalaAdapter", "Phone: " + gaushala.getId());
         // Set up button click listener for buying dung
         holder.btnBuyDung.setOnClickListener(v -> {
             // Intent to navigate to the SendEnquiryActivity
             Intent intent = new Intent(context, SendEnquiryActivity.class);
             intent.putExtra("GAUSHALA_NAME", gaushala.getName()); // Pass gaushala name
             intent.putExtra("GAUSHALA_LOCATION", gaushala.getLocation()); // Pass gaushala location
-            intent.putExtra("PHONE_NUMBER", gaushala.getPhone()); // Pass phone number
+            intent.putExtra("PHONE", gaushala.getPhone()); // Pass phone number
             intent.putExtra("EMAIL", gaushala.getEmail()); // Pass email
+            intent.putExtra("GAUSHALA_ID", gaushala.getId());
             context.startActivity(intent);
         });
     }

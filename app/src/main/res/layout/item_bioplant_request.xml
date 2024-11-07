@@ -14,6 +14,7 @@
         android:orientation="vertical"
         android:padding="16dp">
 
+        <!-- Bioplant Name -->
         <TextView
             android:id="@+id/tvBioplantName"
             android:layout_width="wrap_content"
@@ -23,6 +24,7 @@
             android:textStyle="bold"
             android:paddingBottom="4dp"/>
 
+        <!-- Dung Type -->
         <TextView
             android:id="@+id/tvDungType"
             android:layout_width="wrap_content"
@@ -31,20 +33,25 @@
             android:textSize="16sp"
             android:paddingBottom="4dp"/>
 
+        <!-- Dung Requested -->
         <TextView
             android:id="@+id/tvDungAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Requested Amount: 500 kg"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:paddingBottom="4dp"/>
 
+        <!-- Enquiry Date -->
         <TextView
             android:id="@+id/tvRequestDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Request Date: 01/11/2024"
-            android:textSize="16sp"/>
+            android:textSize="16sp"
+            android:paddingBottom="8dp"/>
 
+        <!-- Accept/Reject Buttons -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

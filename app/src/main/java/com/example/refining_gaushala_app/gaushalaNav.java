@@ -29,13 +29,6 @@ public class gaushalaNav extends AppCompatActivity {
         binding = ActivityGaushalaNavBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Example: Save gaushalaId in SharedPreferences here
-//        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
-//        SharedPreferences.Editor editor = sharedPreferences.edit();
-//        editor.putLong("gaushalaId", CgaushalaId);
-//        editor.apply();
-
-
         setSupportActionBar(binding.appBarGaushalaNav.toolbar);
         binding.appBarGaushalaNav.fab.setOnClickListener(new View.OnClickListener() {
             @Override

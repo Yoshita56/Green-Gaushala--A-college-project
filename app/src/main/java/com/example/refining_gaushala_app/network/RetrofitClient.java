@@ -1,16 +1,25 @@
 package com.example.refining_gaushala_app.network;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 public class RetrofitClient {
 
-    private static final String BASE_URL = "http:/192.168.0.166:8080/";  // Replace with your server's URL
+    private static final String BASE_URL = "http:/192.168.0.112:8080/";  // Replace with your server's URL
     private static Retrofit retrofit;
 
     public static Retrofit getRetrofitInstance() {
         if (retrofit == null) {
+
+            // Create a Gson instance with lenient parsing
+            Gson gson = new GsonBuilder()
+                    .setLenient()  // Allow lenient parsing of malformed JSON
+                    .create();
+
 
             // Create a logging interceptor
             HttpLoggingInterceptor logging = new HttpLoggingInterceptor();

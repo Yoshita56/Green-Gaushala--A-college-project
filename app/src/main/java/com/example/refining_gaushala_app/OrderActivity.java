@@ -1,30 +1,35 @@
 package com.example.refining_gaushala_app;
 
-import android.content.Intent;
+import static com.example.refining_gaushala_app.bioplantLogin.BIOPLANT_ID_KEY;
+import static com.example.refining_gaushala_app.bioplantLogin.PREF_NAME;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-
-import com.google.android.material.snackbar.Snackbar;
-
-import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.view.View;
+import android.util.Log;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.Toast;
 
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.refining_gaushala_app.databinding.ActivityOrderBinding;
+import com.example.refining_gaushala_app.adapters.OrderAdapter;
+import com.example.refining_gaushala_app.models.Bioplant;
+import com.example.refining_gaushala_app.network.ReportApi;
+import com.example.refining_gaushala_app.network.RetrofitClient;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class OrderActivity extends AppCompatActivity {
 
-    private TextView tvOrderStatus, tvOrderDate, tvOrderTime, tvDungAmount, tvRemarks;
+    private RecyclerView rvOrders;
+    private OrderAdapter orderAdapter;
     private Button btnBackToHome;
 
     @Override
@@ -32,34 +37,85 @@ public class OrderActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-        // Initialize UI components
-        tvOrderStatus = findViewById(R.id.tvOrderStatus);
-        tvOrderDate = findViewById(R.id.tvOrderDate);
-        tvOrderTime = findViewById(R.id.tvOrderTime);
-        tvDungAmount = findViewById(R.id.tvDungAmount);
-        tvRemarks = findViewById(R.id.tvRemarks);
-        btnBackToHome = findViewById(R.id.btnBackToHome);
+        // Initialize views
+        initializeViews();
 
-        // Get data passed from the previous activity
-        Intent intent = getIntent();
-        String orderStatus = intent.getStringExtra("ORDER_STATUS");
-        String orderDate = intent.getStringExtra("ORDER_DATE");
-        String orderTime = intent.getStringExtra("ORDER_TIME");
-        String dungAmount = intent.getStringExtra("DUNG_AMOUNT");
-        String remarks = intent.getStringExtra("REMARKS");
+        // Set up RecyclerView
+        setUpRecyclerView();
 
-        // Set the data to TextViews
-        tvOrderStatus.setText("Order Status: " + orderStatus);
-        tvOrderDate.setText("Order Date: " + orderDate);
-        tvOrderTime.setText("Order Time: " + orderTime);
-        tvDungAmount.setText("Requested Amount: " + dungAmount);
-        tvRemarks.setText("Remarks: " + remarks);
+        // Get Bioplant ID from Intent
+        // Retrieve the Bioplant ID from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        long bioplantId = sharedPreferences.getLong(BIOPLANT_ID_KEY, 1);  // Default to 2 if not found
+        Log.d("Bioplant", "Bioplant ID retrieved: " + bioplantId);
+        // Fetch data only if the Bioplant ID is valid
+        if (bioplantId != -1) {
+            fetchBioplantData(bioplantId);
+        } else {
+            Toast.makeText(this, "Invalid Bioplant ID", Toast.LENGTH_SHORT).show();
+        }
 
-        // Set back button listener
-        btnBackToHome.setOnClickListener(v -> {
-            // Navigate back to the previous activity or home
-            finish(); // This will close the current activity
-        });
+        // Set up the "Back to Home" button click listener
+        btnBackToHome.setOnClickListener(v -> onBackPressed());
     }
 
+    /**
+     * Initializes views for this activity.
+     */
+    private void initializeViews() {
+        rvOrders = findViewById(R.id.rvOrders);
+        btnBackToHome = findViewById(R.id.btnBackToHome);
+    }
+
+    /**
+     * Sets up the RecyclerView with an adapter and layout manager.
+     */
+    private void setUpRecyclerView() {
+        // Initialize the RecyclerView with an empty list of orders
+        orderAdapter = new OrderAdapter(new ArrayList<>());
+        rvOrders.setLayoutManager(new LinearLayoutManager(this));
+        rvOrders.setAdapter(orderAdapter);
+    }
+
+    /**
+     * Fetches Bioplant data.
+     *
+     * @param bioplantId The Bioplant ID to fetch data for.
+     */
+    private void fetchBioplantData(long bioplantId) {
+        // Create Retrofit instance and API interface
+        ReportApi reportApi = RetrofitClient.getRetrofitInstance().create(ReportApi.class);
+
+        // Call the API to fetch a single Bioplant
+        Call<Bioplant> call = reportApi.getBioplant(bioplantId);  // Adjusted to get a single Bioplant object
+        call.enqueue(new Callback<Bioplant>() {
+            @Override
+            public void onResponse(Call<Bioplant> call, Response<Bioplant> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    Bioplant bioplant = response.body();
+                    Log.d("OrderActivity", "Fetched Bioplant Data: " + bioplant.toString());
+
+                    // Check if bioplant data is available and update RecyclerView
+                    if (bioplant != null) {
+                        List<Bioplant> bioplantList = new ArrayList<>();
+                        bioplantList.add(bioplant); // Add the single bioplant to a list
+
+                        orderAdapter = new OrderAdapter(bioplantList);  // Pass the single bioplant in a list to the adapter
+                        rvOrders.setAdapter(orderAdapter);
+                    } else {
+                        Toast.makeText(OrderActivity.this, "No Bioplant details found", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Log.e("OrderActivity", "API call failed. Response: " + response.code());
+                    Toast.makeText(OrderActivity.this, "Failed to fetch Bioplant details", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Bioplant> call, Throwable t) {
+                Log.e("OrderActivity", "Network request failed", t);
+                Toast.makeText(OrderActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 }
