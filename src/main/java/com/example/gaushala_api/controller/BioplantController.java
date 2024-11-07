@@ -114,11 +114,8 @@ public class BioplantController {
     @PostMapping("/bioplant/{id}/updateStatus")
     public ResponseEntity<?> updateBioplantStatus(
             @PathVariable Long id,
-            @RequestParam String dungType,
-            @RequestParam Double dungRequested,
-            @RequestParam String date,
             @RequestParam Long gaushalaId,
-            @RequestParam String status) {  // Added status parameter
+            @RequestParam String status) {  // Only status and gaushalaId parameters
 
         // Fetch the existing BiogasPlant by ID
         Optional<BiogasPlant> bioplantOptional = biogasPlantRepository.findById(id);
@@ -140,20 +137,18 @@ public class BioplantController {
 
         // Get the Gaushala object and associate it with the BiogasPlant
         Gaushala gaushala = gaushalaOptional.get();
-        bioplant.setGaushala(gaushala);
+        bioplant.setGaushala(gaushala);  // Associate the Gaushala with the BiogasPlant
 
-        // Update the fields of BiogasPlant
-        bioplant.setDungType(dungType);
-        bioplant.setDungRequested(dungRequested);
-        bioplant.setDate(date); // Set the date from the request
-        bioplant.setStatus(status); // Set the status from the request
+        // Update the status of BiogasPlant
+        bioplant.setStatus(status);  // Set the status based on the request
 
         // Save the updated BiogasPlant
         biogasPlantRepository.save(bioplant);
 
         // Return a success response
-        return ResponseEntity.ok("Request accepted: " + status);
+        return ResponseEntity.ok("Request " + status);
     }
+
 
 
 
