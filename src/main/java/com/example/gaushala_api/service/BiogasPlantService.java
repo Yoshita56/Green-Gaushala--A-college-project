@@ -20,4 +20,10 @@ public class BiogasPlantService {
         BiogasPlant biogasPlant = biogasPlantRepository.findByUserId(userId);
         return biogasPlant != null && biogasPlant.getPassword().equals(password);
     }
+
+//    public BiogasPlant fetch(String userId){
+//        return biogasPlantRepository.findByUserId(userId);
+//        //return biogasPlantRepository.findAll();
+//    }
+
 }

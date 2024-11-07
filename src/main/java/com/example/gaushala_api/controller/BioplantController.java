@@ -1,7 +1,6 @@
 package com.example.gaushala_api.controller;
 
 import com.example.gaushala_api.model.BiogasPlant;
-import com.example.gaushala_api.model.Gaushala;
 import com.example.gaushala_api.service.BiogasPlantService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -35,4 +34,11 @@ public class BioplantController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Login Failed\"}");
         }
     }
+//    @GetMapping("/showProfile/{id}")
+//    public BiogasPlant getStudent(@PathVariable String id) {
+//        BiogasPlant std= biogasPlantService.fetch(id);
+//        //fetching the student details by their resp roll.no.
+//        return std;
+//    }
+
 }

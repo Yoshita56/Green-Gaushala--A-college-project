@@ -16,6 +16,7 @@ public class  BiogasPlant {
     private String phoneNumber;
     private String userId;
     private String password; // Ensure you hash this before storing it
-
+    private String dungType;
+    private float dungRequested;
     // You can add additional fields if needed
 }
