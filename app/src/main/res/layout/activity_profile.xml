@@ -16,7 +16,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnUpdate"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogOut"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:cardCornerRadius="12dp"
@@ -43,7 +43,7 @@
                 android:id="@+id/tvPlantNameValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[Display Plant Name]"
+                android:text="EverGreen Pvt Ltd"
                 android:textSize="18sp"
                 android:textColor="#333333"
                 android:paddingBottom="16dp"/>
@@ -68,7 +68,7 @@
                 android:id="@+id/tvLocationValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[Display Location]"
+                android:text="Rajendar Nagr, New Delhi, Delhi, India"
                 android:textSize="18sp"
                 android:textColor="#333333"
                 android:paddingBottom="16dp"/>
@@ -93,7 +93,7 @@
                 android:id="@+id/tvRegistrationNumberValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[Display Registration Number]"
+                android:text="1022345678"
                 android:textSize="18sp"
                 android:textColor="#333333"
                 android:paddingBottom="16dp"/>
@@ -118,21 +118,20 @@
                 android:id="@+id/tvPhoneNumberValue"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="[Display Phone Number]"
+                android:text="98421013378"
                 android:textSize="18sp"
                 android:textColor="#333333"
                 android:paddingBottom="16dp"/>
 
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Update Button -->
+    <!-- Update/Log Out Button -->
     <Button
-        android:id="@+id/btnUpdate"
+        android:id="@+id/btnLogOut"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Update Profile"
+        android:text="Log Out"
         android:textColor="#FFFFFF"
         android:backgroundTint="#1e88e5"
         app:layout_constraintTop_toBottomOf="@+id/cardPlantProfile"
@@ -140,8 +139,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="8dp"
-    android:padding="12dp"
-    android:textSize="18sp"
-    android:layout_marginBottom="16dp"/>
+        android:padding="12dp"
+        android:textSize="18sp"
+        android:layout_marginBottom="16dp"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

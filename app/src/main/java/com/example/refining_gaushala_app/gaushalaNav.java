@@ -1,5 +1,6 @@
 package com.example.refining_gaushala_app;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import com.example.refining_gaushala_app.databinding.ActivityGaushalaNavBinding;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -21,6 +23,7 @@ public class gaushalaNav extends AppCompatActivity {
     private Long CgaushalaId; // Assuming you have retrieved this from login response
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityGaushalaNavBinding binding;
+    FloatingActionButton logOutbtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +53,29 @@ public class gaushalaNav extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-
+        logOutbtn = findViewById(R.id.fab);
+        logOutbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
     }
+
+    private void logout() {
+        // Clear user session data (if using SharedPreferences for session management)
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // Clear all session data
+        editor.apply();
+
+        // Redirect to LoginActivity
+        Intent intent = new Intent(gaushalaNav.this, gaushalaLogin.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
+        startActivity(intent);
+        finish(); // Close ProfileActivity
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

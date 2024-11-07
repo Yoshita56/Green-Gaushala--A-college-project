@@ -29,6 +29,7 @@
         android:layout_gravity="bottom|end"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="16dp"
-        app:srcCompat="@android:drawable/ic_dialog_email" />
-
+        android:tooltipText="@string/menu_logout"
+        app:srcCompat="@drawable/baseline_cancel_24"
+        />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -4,9 +4,11 @@ import static com.example.refining_gaushala_app.bioplantLogin.BIOPLANT_ID_KEY;
 import static com.example.refining_gaushala_app.bioplantLogin.PREF_NAME;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,7 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProfileActivity extends AppCompatActivity {
-
+//Button logoutButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,15 +54,23 @@ public class ProfileActivity extends AppCompatActivity {
         }
 
         // Button to handle updates, for now shows a toast
-        Button btnUpdate = findViewById(R.id.btnUpdate);
-        btnUpdate.setOnClickListener(v -> {
-            Toast.makeText(ProfileActivity.this, "Update button clicked, Network Error", Toast.LENGTH_SHORT).show();
-
-            // Uncomment below to open a new Activity to allow the user to update their profile
-            // Intent intent = new Intent(ProfileActivity.this, UpdateProfileActivity.class);
-            // startActivity(intent);
+        Button logoutButton = findViewById(R.id.btnLogOut);
+        logoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
         });
+//        btnUpdate.setOnClickListener(v -> {
+//            Toast.makeText(ProfileActivity.this, "Update button clicked, Network Error", Toast.LENGTH_SHORT).show();
+//
+//            // Uncomment below to open a new Activity to allow the user to update their profile
+//            // Intent intent = new Intent(ProfileActivity.this, UpdateProfileActivity.class);
+//            // startActivity(intent);
+//        });
     }
+
+
 
     private void fetchBioplantDetails(long bioplantId) {
         // Initialize Retrofit API using RetrofitClient
@@ -87,6 +97,21 @@ public class ProfileActivity extends AppCompatActivity {
         });
     }
 
+
+
+    private void logout() {
+        // Clear user session data (if using SharedPreferences for session management)
+        SharedPreferences sharedPreferences = getSharedPreferences("UserSession", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear(); // Clear all session data
+        editor.apply();
+
+        // Redirect to LoginActivity
+        Intent intent = new Intent(ProfileActivity.this, bioplantLogin.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Clear the activity stack
+        startActivity(intent);
+        finish(); // Close ProfileActivity
+    }
     private void updateUI(Bioplant bioplant) {
         // Update the UI with Bioplant details
         TextView tvPlantNameValue = findViewById(R.id.tvPlantNameValue);
@@ -105,4 +130,6 @@ public class ProfileActivity extends AppCompatActivity {
 
         }
     }
-}
+    }
+
+

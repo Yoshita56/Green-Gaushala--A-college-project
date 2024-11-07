@@ -144,9 +144,6 @@ public class SendEnquiryActivity extends AppCompatActivity {
 
 
 
-
-
-
     private void updateBioplantDungDetails(String dungType, double dungAmount, long bioplantId, long gaushalaId) {
         // Get the current date in the desired format (e.g., "yyyy-MM-dd")
         String currentDate = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
