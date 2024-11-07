@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.refining_gaushala_app.R;
-import com.example.refining_gaushala_app.ui.gallery.GalleryAdapter;
 import com.example.refining_gaushala_app.models.Bioplant;
 import com.example.refining_gaushala_app.network.RetrofitClient;
 import com.example.refining_gaushala_app.network.ReportApi;
@@ -32,6 +31,7 @@ public class GalleryFragment extends Fragment {
     private GalleryAdapter galleryAdapter;
     private static final String PREF_NAME = "MyPrefs";  // SharedPreferences name
     private static final String GAUSHALA_ID_KEY = "gaushalaId"; // Key for Gaushala ID
+    private long gaushalaId;
 
     public GalleryFragment() {
         // Required empty public constructor
@@ -48,12 +48,12 @@ public class GalleryFragment extends Fragment {
         recyclerViewRequests.setLayoutManager(new LinearLayoutManager(getContext()));
 
         // Set the adapter for the RecyclerView
-        galleryAdapter = new GalleryAdapter(new ArrayList<>()); // Empty list initially
+        galleryAdapter = new GalleryAdapter(new ArrayList<>(), this::updateStatus); // Pass updateStatus method as listener
         recyclerViewRequests.setAdapter(galleryAdapter);
 
         // Retrieve the Gaushala ID from SharedPreferences
         SharedPreferences sharedPreferences = getContext().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        long gaushalaId = sharedPreferences.getLong(GAUSHALA_ID_KEY, -1);  // Default value is -1 if not found
+        gaushalaId = sharedPreferences.getLong(GAUSHALA_ID_KEY, -1);  // Default value is -1 if not found
 
         if (gaushalaId != -1) {
             // Fetch the Bioplant data and display the report for the specific Gaushala
@@ -66,10 +66,8 @@ public class GalleryFragment extends Fragment {
     }
 
     private void fetchBioplantData(long gaushalaId) {
-        // Create Retrofit instance and API interface
         ReportApi reportApi = RetrofitClient.getRetrofitInstance().create(ReportApi.class);
 
-        // Now, the bioplantId should be fetched based on the Gaushala ID, so you can call the API that returns Bioplant data for the current Gaushala ID.
         Call<Bioplant> call = reportApi.getBioplant(gaushalaId); // API that returns Bioplant by Gaushala ID
         call.enqueue(new Callback<Bioplant>() {
             @Override
@@ -77,16 +75,13 @@ public class GalleryFragment extends Fragment {
                 if (response.isSuccessful() && response.body() != null) {
                     Bioplant bioplant = response.body();
 
-                    // Prepare the data to display in the RecyclerView
                     List<Bioplant> bioplantList = new ArrayList<>();
-                    bioplantList.add(bioplant); // Add the single bioplant to a list
+                    bioplantList.add(bioplant);
 
-                    // Show the Bioplant and Gaushala report
                     String report = generateReport(bioplant, gaushalaId);
-                    // You can show this in a TextView or update it in the RecyclerView
-                    Toast.makeText(getContext(), report, Toast.LENGTH_LONG).show(); // Temporary for testing
+                    Toast.makeText(getContext(), report, Toast.LENGTH_LONG).show();
 
-                    galleryAdapter.updateData(bioplantList); // Update RecyclerView with new data
+                    galleryAdapter.updateData(bioplantList);
                 } else {
                     Toast.makeText(getContext(), "Failed to fetch Bioplant data", Toast.LENGTH_SHORT).show();
                 }
@@ -99,15 +94,35 @@ public class GalleryFragment extends Fragment {
         });
     }
 
+    private void updateStatus(Bioplant bioplant, String status) {
+        ReportApi reportApi = RetrofitClient.getRetrofitInstance().create(ReportApi.class);
+
+        Call<String> call = reportApi.updateBioplantStatus(bioplant.getId(), gaushalaId, status);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response.isSuccessful()) {
+                    Toast.makeText(getContext(), "Status updated to: " + status, Toast.LENGTH_SHORT).show();
+                    fetchBioplantData(gaushalaId);  // Refresh the data after updating status
+                } else {
+                    Toast.makeText(getContext(), "Failed to update status", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                Toast.makeText(getContext(), "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
     private String generateReport(Bioplant bioplant, long gaushalaId) {
-        // Generate the report string based on the Bioplant and Gaushala data
         String bioplantName = bioplant.getName();
-        String gaushalaLocation = bioplant.getGaushala().getLocation();  // Gaushala location
+        String gaushalaLocation = bioplant.getGaushala().getLocation();
         String dungType = bioplant.getDungType();
         double dungRequested = bioplant.getDungRequested();
         String date = bioplant.getDate();
 
-        // Example report: Bioplant ID sent a request to Gaushala with ID [gaushalaId]
         return "Bioplant: " + bioplantName + "\n" +
                 "Gaushala (ID: " + gaushalaId + ") located in " + gaushalaLocation + "\n" +
                 "Dung Type: " + dungType + "\n" +

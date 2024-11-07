@@ -89,16 +89,12 @@ public interface ReportApi {
 
     // Define the new endpoint for updating the Bioplant status
     @FormUrlEncoded
-    @POST("/bioplant/{id}/updateStatus")
+    @POST("/api/bioplant/bioplant/{id}/updateStatus")
     Call<String> updateBioplantStatus(
             @Path("id") long bioplantId,
-            @Field("dungType") String dungType,
-            @Field("dungRequested") double dungRequested,
-            @Field("date") String date,
             @Field("gaushalaId") long gaushalaId,
             @Field("status") String status
     );
-
 
     //to fetch bioplant id
     @GET("/api/bioplant/bioplant/{id}")
