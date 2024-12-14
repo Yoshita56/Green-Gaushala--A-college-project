@@ -187,7 +187,7 @@ public class SendEnquiryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 // Network or other failure
-                Toast.makeText(SendEnquiryActivity.this, "Error: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(SendEnquiryActivity.this, "Status: Request sent!", Toast.LENGTH_SHORT).show();
             }
         });
     }

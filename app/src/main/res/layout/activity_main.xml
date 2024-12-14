@@ -137,16 +137,16 @@
                 android:backgroundTint="@color/brown"
                 android:textSize="20dp" />
 
-            <Button
-                android:layout_width="200dp"
-                android:textColor="@color/white"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_weight="50"
-                android:text="Show Status"
-                android:fontFamily="arial"
-                android:backgroundTint="@color/brown"
-                android:textSize="20sp" />
+<!--            <Button-->
+<!--                android:layout_width="200dp"-->
+<!--                android:textColor="@color/white"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginBottom="2dp"-->
+<!--                android:layout_weight="50"-->
+<!--                android:text="Show Status"-->
+<!--                android:fontFamily="arial"-->
+<!--                android:backgroundTint="@color/brown"-->
+<!--                android:textSize="20sp" />-->
         </LinearLayout>
 
         <Button
