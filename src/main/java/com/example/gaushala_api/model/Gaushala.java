@@ -1,3 +1,4 @@
+
 package com.example.gaushala_api.model;
 
 import jakarta.persistence.*;
